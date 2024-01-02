@@ -1,0 +1,65 @@
+@extends('layout.main')
+@section('title', 'Data Kategori')
+@section('username', $name)
+@section('content')
+    @if ($message = Session::get('success'))
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-check"></i> Success!</h5>
+            {{ $message }}
+        </div>
+    @endif
+    <a class="btn btn-primary mb-2" href="{{ route('category.create') }}">Tambah Kategori</a>
+    {{-- <a target="_blank" class="btn btn-danger mb-2" href="{{ route('publishers.print') }}">Export PDF</a>
+    <a target="_blank" class="btn btn-success mb-2" href="{{ route('publishers.export.excel') }}">Export Excel</a> --}}
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools">
+                <form action="">
+                    <input value="{{ old('search') }}" placeholder="Search Book" type="text" name="search"
+                        class="from-control">
+                </form>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table" width='100%'>
+                <thead>
+                    <tr>
+                        <th class="col-1">No</th>
+                        <th class="col-2">id</th>
+                        <th class="col-6">Nama Kategori</th>
+                        <th class="col-3">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $no = 1;
+                    @endphp
+                    @forelse ($categories as $category)
+                        <tr>
+                            <td>{{ $no++ }}</td>
+                            <td>{{ $category->id }}</td>
+                            <td>{{ $category->name }}</td>
+                            <td>
+                                <a class="btn btn-warning" href="{{ route('category.edit', [$category->id]) }}">
+                                    <i class="fa fa-pencil-alt"></i> Edit
+                                </a> |
+                                <a class="btn btn-danger" href="{{ route('category.del.confirm',[$category->id]) }}">
+                                    <i class="fa fa-trash"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td style="text-align: center;" colspan="4"><b>Data Kosong</b></td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            {{ $categories->withQueryString()->links('pagination::bootstrap-5') }}
+        </div>
+    </div>
+
+@endsection

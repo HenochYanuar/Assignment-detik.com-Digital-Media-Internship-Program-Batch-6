@@ -1,16 +1,13 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BookCategoryController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\AuthorController;
-use App\Http\Controllers\CobaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Mail\TestMail;
-use App\models\Book;
-use App\models\Publisher;
-use App\Models\ResetPassword;
 use Illuminate\Support\Facades\Mail;
 
 /*
@@ -64,6 +61,15 @@ Route::group(['middleware' => 'login.auth'], function () {
     Route::post('/publisher/delete', [PublisherController::class, 'delete'])->name('publishers.delete');
     Route::get('/publisher/{publisherId}/edit', [PublisherController::class, 'edit'])->name('publishers.edit');
     Route::post('/publisher/update', [PublisherController::class, 'update'])->name('publishers.update');
+
+    #Route Category
+    Route::get('/category', [BookCategoryController::class, 'index'])->name('category.index');
+    Route::get('/category/create', [BookCategoryController::class, 'create'])->name('category.create');
+    Route::post('/category/posts', [BookCategoryController::class, 'posts'])->name('category.posts');
+    Route::get('/category/{categoryId}/delete-confirm', [BookCategoryController::class, 'confirmDelete'])->name('category.del.confirm');
+    Route::post('/category/delete', [BookCategoryController::class, 'delete'])->name('category.delete');
+    Route::get('/category/{categoryId}/edit', [BookCategoryController::class, 'edit'])->name('category.edit');
+    Route::post('/category/update', [BookCategoryController::class, 'update'])->name('category.update');
 
     #Route authors
     Route::get('/authors', [AuthorController::class, 'index'])->name('authors.index');
