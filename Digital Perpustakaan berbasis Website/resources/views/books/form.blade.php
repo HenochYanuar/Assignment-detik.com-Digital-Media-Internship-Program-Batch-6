@@ -11,7 +11,7 @@
             </ul>
         </div>
     @endif --}}
-    <form method="POST" action="{{ route('books.store') }}">
+    <form method="POST" action="{{ route('books.store') }}" enctype="multipart/form-data">
         <div class="row">
             <div class="card col-5 mr-2">
                 <div class="card-body">
@@ -53,6 +53,22 @@
                             @endforeach
                         </select>
                         @error('id_publisher')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="">Cover Buku</label>
+                        <input class="form-control @error('cover_image') is-invalid @enderror" value="{{ old('cover_image') }}"
+                            type="file" name="cover_image" accept="image/jpeg, image/png, image/jpg" />
+                        @error('cover_image')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="">File Buku</label>
+                        <input class="form-control @error('pdf_file') is-invalid @enderror" value="{{ old('pdf_file') }}"
+                            type="file" name="pdf_file" accept="application/pdf" />
+                        @error('pdf_file')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>

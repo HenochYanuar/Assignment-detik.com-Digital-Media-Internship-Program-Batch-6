@@ -69,6 +69,7 @@
                 <th>No</th>
                 <th>Kode</th>
                 <th>Judul Buku</th>
+                <th>Kategori</th>
                 <th>Penerbit</th>
             </tr>
         </thead>
@@ -81,6 +82,7 @@
                     <td>{{ $i++ }}</td>
                     <td>{{ $book->code }}</td>
                     <td>{{ $book->title }}</td>
+                    <td>{{ $book->category->name }}</td>
                     <td>{{ $book->publisher->name }}</td>
                 </tr>
             @endforeach

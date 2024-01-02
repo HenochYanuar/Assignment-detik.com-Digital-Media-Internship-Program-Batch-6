@@ -16,6 +16,7 @@
         <form method="POST" action="{{route('books.update')}}">
             @csrf
             <input type="hidden" name="id" value="{{ $book->id }}">
+            <input type="hidden" name="id_file" value="{{ $book->id_file }}">
             <div class="form-group">
                 <label for="">Kode</label>
                 <input class="form-control" type="text" value="{{ $book->code }}" name="code" required readonly disabled />

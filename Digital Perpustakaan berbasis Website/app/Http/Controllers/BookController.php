@@ -9,6 +9,7 @@ use App\Models\Publisher;
 use App\Models\Author;
 use App\Models\User;
 use App\Models\BookAuthor;
+use App\Models\BookFile;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Export\ExportBooks;
 use App\Models\BookCategory;
@@ -98,6 +99,7 @@ class BookController extends BaseController
         $firstUser = $loggedInUser->first();
         $name = $firstUser->name;
         $name = $loggedInUser[0]->name;
+
         $authors = Author::all();
         $publishers = Publisher::all();
         $categories = BookCategory::all();
@@ -120,18 +122,44 @@ class BookController extends BaseController
                 'code' => 'required | max:4 | unique:books,code',
                 'title' => 'required | max:255',
                 'id_category' => 'required',
-                'id_publisher' => 'required'
+                'id_publisher' => 'required',
+                'cover_image' => 'required|file|mimes:jpeg,png,jpg|max:2048',
+                'pdf_file' => 'required|file|mimes:pdf',
+            ]);
+
+            $cover = $request->file('cover_image');
+            $pdf = $request->file('pdf_file');
+
+            $destinationCoverPath = public_path('/assets/dist/img/cover');
+            $destinationPdfPath = public_path('/assets/dist/pdf');
+
+            $cover_path = '/assets/dist/img/cover/' . $cover->hashName();
+            $cover_mime = $cover->getClientMimeType();
+            $cover_image = file_get_contents($cover);
+            $cover->move($destinationCoverPath, $cover->hashName());
+            $pdf_path = '/assets/dist/pdf/' . $pdf->hashName();
+            $pdf_mime = $pdf->getClientMimeType();
+            $pdf_file = file_get_contents($pdf);
+            $pdf->move($destinationPdfPath, $pdf->hashName());
+            $file = BookFile::create([
+                'cover_path' => $cover_path,
+                'cover_mime' => $cover_mime,
+                'cover_image' => $cover_image,
+                'pdf_path' => $pdf_path,
+                'pdf_mime' => $pdf_mime,
+                'pdf_file' => $pdf_file
             ]);
 
             $code = $request->code;
             $title = $request->title;
             $id_category = $request->id_category;
-            $idPublisher = $request->id_publisher;
+            $id_publisher = $request->id_publisher;
             $book = Book::create([
                 'code' => $code,
                 'title' => $title,
+                'id_file' => $file->id,
                 'id_category' => $id_category,
-                'id_publisher' => $idPublisher
+                'id_publisher' => $id_publisher,
             ]);
             foreach ($request->author as $authorId) {
                 BookAuthor::create([
@@ -201,13 +229,11 @@ class BookController extends BaseController
 
         $bookId = $request->id;
         $book = Book::findOrFail($bookId)->update([
+            'id_file' => $request->id_file,
             'title' => $request->title,
             'id_category' => $request->id_category,
             'id_publisher' => $request->id_publisher
         ]);
-        // $book->update([
-        //     'title' => $request->title,
-        // ]);
         return redirect(route('books.index'))->with('success', 'Buku Berhasil Diubah');
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     use HasFactory;
-    protected $fillable = ['code','title','id_publisher', 'id_category'];
+    protected $fillable = ['code','title','id_publisher', 'id_category', 'id_file'];
 
     public function publisher(){
         return $this->belongsTo(Publisher::class,'id_publisher');
@@ -16,6 +16,10 @@ class Book extends Model
 
     public function category(){
         return $this->belongsTo(BookCategory::class,'id_category');
+    }
+
+    public function book_file(){
+        return $this->belongsTo(BookFile::class,'id_file');
     }
 
     public function authors(){

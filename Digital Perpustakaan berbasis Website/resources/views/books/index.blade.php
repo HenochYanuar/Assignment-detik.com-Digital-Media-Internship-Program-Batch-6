@@ -25,13 +25,14 @@
             <table class="table" width='100%'>
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Kode</th>
-                        <th>Judul</th>
-                        <th>Author</th>
-                        <th>Kategori</th>
-                        <th>Publisher</th>
-                        <th>Aksi</th>
+                        <th class="">No</th>
+                        <th class="">Kode</th>
+                        <th class="col-2">Judul</th>
+                        <th class="col-2">Cover</th>
+                        <th class="col-2">Author</th>
+                        <th class="col-1">Kategori</th>
+                        <th class="col-1">Publisher</th>
+                        <th class="col-4">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +44,9 @@
                             <td>{{ $no++ }}</td>
                             <td>{{ $book->code }}</td>
                             <td>{{ $book->title }}</td>
+                            <td><img style="width: 100px" src="{{ $book->book_file->cover_path }}" alt=""><br> <br>
+                                <a class="btn btn-outline-primary" href="{{ $book->book_file->pdf_path }}" target="_blank">Baca Buku</a>
+                            </td>
                             <td>
                                 @foreach ($book->authors as $author)
                                     {{ $author->name }} <br>
@@ -56,7 +60,7 @@
                                 </a> |
                                 <a class="btn btn-danger" href="{{ route('books.del.confirm', [$book->id]) }}">
                                     <i class="fa fa-trash"></i> Delete
-                                </a>
+                                </a> |
                                 <a class="btn btn-outline-danger" target="_blank" href="{{ route('books.print.detail', [$book->id]) }}">
                                     <i class="fas fa-file-pdf"></i>
                                 </a>
