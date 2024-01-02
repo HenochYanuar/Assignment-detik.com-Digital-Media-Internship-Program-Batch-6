@@ -1,5 +1,6 @@
 @extends('layout.main')
 @section('title', 'Data Publishers')
+@section('username', $name)
 @section('content')
     @if ($message = Session::get('success'))
         <div class="alert alert-success alert-dismissible">

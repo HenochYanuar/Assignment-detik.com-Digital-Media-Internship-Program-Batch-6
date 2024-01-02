@@ -23,7 +23,6 @@ class BookController extends BaseController
      */
     public function index()
     {
-        // $loggedInUser = Session::get('loggedInUser');
         $token = session('token');
         $loggedInUser = User::where('token', $token)->get();
         $firstUser = $loggedInUser->first();
@@ -90,11 +89,17 @@ class BookController extends BaseController
     public function create()
     {
         $this->superadminOnly();
+        $token = session('token');
+        $loggedInUser = User::where('token', $token)->get();
+        $firstUser = $loggedInUser->first();
+        $name = $firstUser->name;
+        $name = $loggedInUser[0]->name;
         $authors = Author::all();
         $publishers = Publisher::all();
         return view('books/form', [
             'publishers' => $publishers,
             'authors' => $authors,
+            'name' => $name
         ]);
     }
 
@@ -137,9 +142,15 @@ class BookController extends BaseController
     {
         #ambill data dari Id
         $this->superadminOnly();
+        $token = session('token');
+        $loggedInUser = User::where('token', $token)->get();
+        $firstUser = $loggedInUser->first();
+        $name = $firstUser->name;
+        $name = $loggedInUser[0]->name;
         $book = Book::findOrFail($bookId);
         return view('books/delete-confirm', [
             'book' => $book,
+            'name' => $name
         ]);
     }
 
@@ -155,11 +166,17 @@ class BookController extends BaseController
     {
         #ambil data buku by Id
         $this->superadminOnly();
+        $token = session('token');
+        $loggedInUser = User::where('token', $token)->get();
+        $firstUser = $loggedInUser->first();
+        $name = $firstUser->name;
+        $name = $loggedInUser[0]->name;
         $book = Book::findOrFail($bookId);
         $publishers = Publisher::all();
         return view('books/form-update', [
             'book' => $book,
-            'publishers' => $publishers
+            'publishers' => $publishers,
+            'name' => $name
         ]);
     }
 

@@ -1,5 +1,6 @@
 @extends('layout.main')
 @section('title', 'Delete Data Buku')
+@section('username', $name)
 @section('content')
 <div class="card">
     <div class="card-header">

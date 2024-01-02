@@ -1,5 +1,6 @@
 @extends('layout.main')
 @section('title', 'Update Data Buku')
+@section('username', $name)
 @section('content')
 {{-- @if ($errors->any())
         <div class="alert alert-danger">

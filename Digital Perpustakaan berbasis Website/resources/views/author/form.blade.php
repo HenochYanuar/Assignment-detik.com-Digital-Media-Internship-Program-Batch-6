@@ -1,5 +1,6 @@
 @extends('layout.main')
 @section('title', 'Tambah Author')
+@section('username', $name)
 @section('content')
     <div class="card">
         <div class="card-body">

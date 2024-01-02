@@ -1,5 +1,6 @@
 @extends('layout.main')
 @section('title', 'Update Data Author')
+@section('username', $name)
 @section('content')
 <div class="card">
     <div class="card-body">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Export\ExportAuthors;
 use Maatwebsite\Excel\Facades\Excel;
@@ -13,13 +14,19 @@ class AuthorController extends BaseController
     public function index()
     {
         $this->superadminOnly();
+        $token = session('token');
+        $loggedInUser = User::where('token', $token)->get();
+        $firstUser = $loggedInUser->first();
+        $name = $firstUser->name;
+        $name = $loggedInUser[0]->name;
         $authors = Author::query()
             ->when(request('search'), function ($query) {
                 $searchTerm = '%' . request('search') . '%';
                 $query->where('name', 'like', $searchTerm);
             })->paginate(5);
         return view('author/index', [
-            'authors' => $authors
+            'authors' => $authors,
+            'name' => $name
         ]);
     }
 
@@ -39,7 +46,15 @@ class AuthorController extends BaseController
 
     public function create()
     {
-        return view('author/form');
+        $this->superadminOnly();
+        $token = session('token');
+        $loggedInUser = User::where('token', $token)->get();
+        $firstUser = $loggedInUser->first();
+        $name = $firstUser->name;
+        $name = $loggedInUser[0]->name;
+        return view('author/form', [
+            'name' => $name
+        ]);
     }
 
     public function posts(Request $request)
@@ -57,9 +72,16 @@ class AuthorController extends BaseController
 
     public function confirmDelete($authorId)
     {
+        $this->superadminOnly();
+        $token = session('token');
+        $loggedInUser = User::where('token', $token)->get();
+        $firstUser = $loggedInUser->first();
+        $name = $firstUser->name;
+        $name = $loggedInUser[0]->name;
         $author = Author::FindOrFail($authorId);
         return view('/author/delete-confirm', [
             'author' => $author,
+            'name' => $name
         ]);
     }
 
@@ -73,9 +95,16 @@ class AuthorController extends BaseController
 
     public function edit($authorId)
     {
+        $this->superadminOnly();
+        $token = session('token');
+        $loggedInUser = User::where('token', $token)->get();
+        $firstUser = $loggedInUser->first();
+        $name = $firstUser->name;
+        $name = $loggedInUser[0]->name;
         $author = Author::FindOrFail($authorId);
         return view('/author/form-update', [
             'author' => $author,
+            'name' => $name
         ]);
     }
 
