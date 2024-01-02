@@ -27,20 +27,6 @@ class BookCategoryController extends BaseController
         ]);
     }
 
-    // public function print()
-    // {
-    //     $publishers = BookCategory::all();
-    //     $filename = "publishers_" . date('Y-m-d-H-i-s') . ".pdf";
-    //     $pdf = Pdf::loadView('publisher/print', ['publishers' => $publishers]);
-    //     $pdf->setPaper('A4', 'potrait');
-    //     return $pdf->stream($filename);
-    // }
-
-    // public function excel()
-    // {
-    //     return Excel::download(new ExportPublishers, 'publishers.xlsx');
-    // }
-
     public function create()
     {
         $this->superadminOnly();

@@ -28,6 +28,20 @@
                 @enderror
             </div>
             <div class="form-group">
+                <label for="">Category</label>
+                <select name="id_category" class="form-control @error('id_category') is-invalid @enderror">
+                    <option value="" disabled selected>Pilih Category</option>
+                    @foreach ($categories as $c)
+                        <option {{ $c -> id == $book->id_category ? 'selected' : '' }} value="{{ $c->id }}">
+                            {{ $c->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('id_category')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
                 <label for="">Publisher</label>
                 <select name="id_publisher" class="form-control @error('id_publisher') is-invalid @enderror">
                     @foreach ($publishers as $p)

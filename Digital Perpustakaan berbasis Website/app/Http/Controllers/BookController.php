@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\BookAuthor;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Export\ExportBooks;
+use App\Models\BookCategory;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 
@@ -29,11 +30,14 @@ class BookController extends BaseController
         $name = $firstUser->name;
         $name = $loggedInUser[0]->name;
         $books = Book::query()
-            ->with(['publisher', 'authors'])
+            ->with(['publisher', 'category', 'authors'])
             ->when(request('search'), function ($query) {
                 $searchTerm = '%' . request('search') . '%';
                 $query->where('title', 'like', $searchTerm)
                     ->orWhere('code', 'like', $searchTerm)
+                    ->orWhereHas('category', function ($query) use ($searchTerm) {
+                        $query->where('name', 'like', $searchTerm);
+                    })
                     ->orWhereHas('publisher', function ($query) use ($searchTerm) {
                         $query->where('name', 'like', $searchTerm);
                     })
@@ -96,9 +100,11 @@ class BookController extends BaseController
         $name = $loggedInUser[0]->name;
         $authors = Author::all();
         $publishers = Publisher::all();
+        $categories = BookCategory::all();
         return view('books/form', [
             'publishers' => $publishers,
             'authors' => $authors,
+            'categories' => $categories,
             'name' => $name
         ]);
     }
@@ -113,15 +119,18 @@ class BookController extends BaseController
             $validate = $request->validate([
                 'code' => 'required | max:4 | unique:books,code',
                 'title' => 'required | max:255',
+                'id_category' => 'required',
                 'id_publisher' => 'required'
             ]);
 
             $code = $request->code;
             $title = $request->title;
+            $id_category = $request->id_category;
             $idPublisher = $request->id_publisher;
             $book = Book::create([
                 'code' => $code,
                 'title' => $title,
+                'id_category' => $id_category,
                 'id_publisher' => $idPublisher
             ]);
             foreach ($request->author as $authorId) {
@@ -173,9 +182,11 @@ class BookController extends BaseController
         $name = $loggedInUser[0]->name;
         $book = Book::findOrFail($bookId);
         $publishers = Publisher::all();
+        $categories = BookCategory::all();
         return view('books/form-update', [
             'book' => $book,
             'publishers' => $publishers,
+            'categories' => $categories,
             'name' => $name
         ]);
     }
@@ -184,12 +195,15 @@ class BookController extends BaseController
     {
         $validate = $request->validate([
             'title' => 'required | max:255',
+            'id_category' => 'required',
             'id_publisher' => 'required'
         ]);
 
         $bookId = $request->id;
         $book = Book::findOrFail($bookId)->update([
             'title' => $request->title,
+            'id_category' => $request->id_category,
+            'id_publisher' => $request->id_publisher
         ]);
         // $book->update([
         //     'title' => $request->title,

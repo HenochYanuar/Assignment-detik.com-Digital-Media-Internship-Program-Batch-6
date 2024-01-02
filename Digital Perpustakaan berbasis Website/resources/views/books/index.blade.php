@@ -29,7 +29,7 @@
                         <th>Kode</th>
                         <th>Judul</th>
                         <th>Author</th>
-                        <th>Jumlah Penulis</th>
+                        <th>Kategori</th>
                         <th>Publisher</th>
                         <th>Aksi</th>
                     </tr>
@@ -48,7 +48,7 @@
                                     {{ $author->name }} <br>
                                 @endforeach
                             </td>
-                            <td>{{ $book->authors->count() }} Orang</td>
+                            <td>{{ $book->category->name }}</td>
                             <td>{{ $book->publisher->name }}</td>
                             <td>
                                 <a class="btn btn-warning" href="{{ route('books.edit', [$book->id]) }}">
