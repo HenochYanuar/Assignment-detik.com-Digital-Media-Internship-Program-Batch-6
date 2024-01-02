@@ -5,8 +5,9 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
-class PwlMiddleware
+class AuthMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,6 +19,11 @@ class PwlMiddleware
         if(session('token', null) === null){
             return redirect()->route('login');
         }
+
+        $loggedInUser = Auth::user();
+
+        session(['loggedInUser' => $loggedInUser]);
+
         return $next($request);
     }
 }

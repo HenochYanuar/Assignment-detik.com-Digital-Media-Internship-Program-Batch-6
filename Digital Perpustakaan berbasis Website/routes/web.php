@@ -43,7 +43,7 @@ Route::post('login/verify', [LoginController::class, 'verify'])->name('login.ver
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
 #Route harus login
-Route::group(['middleware' => 'pwl.auth'], function () {
+Route::group(['middleware' => 'login.auth'], function () {
     Route::get('/', function () {
         return view('layout.main');
     });
@@ -89,46 +89,3 @@ Route::group(['middleware' => 'pwl.auth'], function () {
         Mail::to('xodabi7530@in2reach.com')->send(new TestMail());
     });
 });
-
-
-
-// Route::get('/test', function () {
-//     echo "Hello World";
-// });
-// Route::get('/test/{nama}/{umur}', function ($nama, $umur) {
-//     echo "Hello World " . $nama . ' ' . $umur;
-// });
-
-// Route::get('/produk/baru', function () {
-//     echo "Ini adalah halaman Produk";
-// });
-
-// Route::get('/coba', [CobaController::class, 'index']);
-// Route::get('/coba/lagi', [CobaController::class, 'testing']);
-// Route::get('/coba/view', [CobaController::class, 'cobaView']);
-// Route::get('/coba/model', [CobaController::class, 'cobaModel']);
-// Route::get('/coba/mvc', [CobaController::class, 'cobaMVC']);
-
-
-
-// Route::get('/coba-model', function () {
-//     $books = Book::with('publisher')->get();
-//     dd($books);
-//     foreach ($books as $book) {
-//         echo $book->code . ' - ' . $book->publisher->id . '<br/>';
-//     }
-//     dd();
-// });
-
-// Route::get('/coba-pub', function () {
-//     $publishers = Publisher::with('books')->get();
-//     foreach ($publishers as $p) {
-//         echo $p->name . ' (';
-//         foreach ($p->books as $b) {
-//             echo $b->title . ', ';
-//         }
-//         echo ')<br>';
-//     }
-// });
-
-// Route::get('/coba-model')

@@ -7,10 +7,13 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use App\Models\Publisher;
 use App\Models\Author;
+use App\Models\User;
 use App\Models\BookAuthor;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Export\ExportBooks;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
+
 // use Barryvdh\DomPDF\PDF as DomPDFPDF;
 
 class BookController extends BaseController
@@ -20,6 +23,12 @@ class BookController extends BaseController
      */
     public function index()
     {
+        // $loggedInUser = Session::get('loggedInUser');
+        $token = session('token');
+        $loggedInUser = User::where('token', $token)->get();
+        $firstUser = $loggedInUser->first();
+        $name = $firstUser->name;
+        $name = $loggedInUser[0]->name;
         $books = Book::query()
             ->with(['publisher', 'authors'])
             ->when(request('search'), function ($query) {
@@ -35,7 +44,8 @@ class BookController extends BaseController
             })->paginate(10);
         session()->flashInput(request()->input());
         return view('books/index', [
-            'books' => $books
+            'books' => $books,
+            'name' => $name
         ]);
     }
 

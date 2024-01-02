@@ -8,10 +8,11 @@ use App\Export\ExportAuthors;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
-class AuthorController extends Controller
+class AuthorController extends BaseController
 {
     public function index()
     {
+        $this->superadminOnly();
         $authors = Author::query()
             ->when(request('search'), function ($query) {
                 $searchTerm = '%' . request('search') . '%';

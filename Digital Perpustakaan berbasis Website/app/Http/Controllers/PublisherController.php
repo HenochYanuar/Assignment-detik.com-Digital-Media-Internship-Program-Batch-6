@@ -8,13 +8,14 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Export\ExportPublishers;
 use Maatwebsite\Excel\Facades\Excel;
 
-class PublisherController extends Controller
+class PublisherController extends BaseController
 {
   /**
    * Fungsi untuk menampilkan semua data books
    */
   public function index()
   {
+    $this->superadminOnly();
     $publishers = Publisher::query()
       ->when(request('search'), function ($query) {
         $searchTerm = '%' . request('search') . '%';
