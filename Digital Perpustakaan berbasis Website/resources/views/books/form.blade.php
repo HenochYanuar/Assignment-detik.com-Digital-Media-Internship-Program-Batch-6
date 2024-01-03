@@ -16,6 +16,7 @@
             <div class="card col-5 mr-2">
                 <div class="card-body">
                     @csrf
+                    <input type="" name="id_user" value="{{ $id_user }}">
                     <div class="form-group">
                         <label for="">Kode</label>
                         <input class="form-control @error('code') is-invalid @enderror" value="{{ old('code') }}"

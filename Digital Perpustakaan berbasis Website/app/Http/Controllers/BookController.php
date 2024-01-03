@@ -30,22 +30,43 @@ class BookController extends BaseController
         $firstUser = $loggedInUser->first();
         $name = $firstUser->name;
         $name = $loggedInUser[0]->name;
-        $books = Book::query()
+
+        if ($firstUser->role == 'user'){
+            $books = Book::query()
+            ->with(['publisher', 'category', 'authors'])
+            ->where('id_user', $firstUser->id)
+            ->when(request('search'), function ($query) {
+                $searchTerm = '%' . request('search') . '%';
+                $query->where('title', 'like', $searchTerm)
+                ->orWhere('code', 'like', $searchTerm)
+                ->orWhereHas('category', function ($query) use ($searchTerm) {
+                    $query->where('name', 'like', $searchTerm);
+                })
+                ->orWhereHas('publisher', function ($query) use ($searchTerm) {
+                    $query->where('name', 'like', $searchTerm);
+                })
+                ->orWhereHas('authors', function ($query) use ($searchTerm) {
+                    $query->where('name', 'like', $searchTerm);
+                });
+            })->paginate(10);
+        } else {
+            $books = Book::query()
             ->with(['publisher', 'category', 'authors'])
             ->when(request('search'), function ($query) {
                 $searchTerm = '%' . request('search') . '%';
                 $query->where('title', 'like', $searchTerm)
-                    ->orWhere('code', 'like', $searchTerm)
-                    ->orWhereHas('category', function ($query) use ($searchTerm) {
-                        $query->where('name', 'like', $searchTerm);
-                    })
-                    ->orWhereHas('publisher', function ($query) use ($searchTerm) {
-                        $query->where('name', 'like', $searchTerm);
-                    })
-                    ->orWhereHas('authors', function ($query) use ($searchTerm) {
-                        $query->where('name', 'like', $searchTerm);
-                    });
+                ->orWhere('code', 'like', $searchTerm)
+                ->orWhereHas('category', function ($query) use ($searchTerm) {
+                    $query->where('name', 'like', $searchTerm);
+                })
+                ->orWhereHas('publisher', function ($query) use ($searchTerm) {
+                    $query->where('name', 'like', $searchTerm);
+                })
+                ->orWhereHas('authors', function ($query) use ($searchTerm) {
+                    $query->where('name', 'like', $searchTerm);
+                });
             })->paginate(10);
+        }
         session()->flashInput(request()->input());
         return view('books/index', [
             'books' => $books,
@@ -93,12 +114,13 @@ class BookController extends BaseController
      */
     public function create()
     {
-        $this->superadminOnly();
+        // $this->superadminOnly();
         $token = session('token');
         $loggedInUser = User::where('token', $token)->get();
         $firstUser = $loggedInUser->first();
         $name = $firstUser->name;
         $name = $loggedInUser[0]->name;
+        $id_user = $firstUser->id;
 
         $authors = Author::all();
         $publishers = Publisher::all();
@@ -107,7 +129,8 @@ class BookController extends BaseController
             'publishers' => $publishers,
             'authors' => $authors,
             'categories' => $categories,
-            'name' => $name
+            'name' => $name,
+            'id_user' => $id_user
         ]);
     }
 
@@ -154,12 +177,14 @@ class BookController extends BaseController
             $title = $request->title;
             $id_category = $request->id_category;
             $id_publisher = $request->id_publisher;
+            $id_user = $request->id_user;
             $book = Book::create([
                 'code' => $code,
                 'title' => $title,
                 'id_file' => $file->id,
                 'id_category' => $id_category,
                 'id_publisher' => $id_publisher,
+                'id_user' => $id_user,
             ]);
             foreach ($request->author as $authorId) {
                 BookAuthor::create([
@@ -178,7 +203,7 @@ class BookController extends BaseController
     public function confirmDelete($bookId)
     {
         #ambill data dari Id
-        $this->superadminOnly();
+        // $this->superadminOnly();
         $token = session('token');
         $loggedInUser = User::where('token', $token)->get();
         $firstUser = $loggedInUser->first();
@@ -202,12 +227,13 @@ class BookController extends BaseController
     public function edit($bookId)
     {
         #ambil data buku by Id
-        $this->superadminOnly();
+        // $this->superadminOnly();
         $token = session('token');
         $loggedInUser = User::where('token', $token)->get();
         $firstUser = $loggedInUser->first();
         $name = $firstUser->name;
         $name = $loggedInUser[0]->name;
+        $id_user = $firstUser->id;
         $book = Book::findOrFail($bookId);
         $publishers = Publisher::all();
         $categories = BookCategory::all();
@@ -215,7 +241,8 @@ class BookController extends BaseController
             'book' => $book,
             'publishers' => $publishers,
             'categories' => $categories,
-            'name' => $name
+            'name' => $name,
+            'id_user'=>$id_user
         ]);
     }
 
@@ -265,6 +292,7 @@ class BookController extends BaseController
 
         $bookId = $request->id;
         $book = Book::findOrFail($bookId)->update([
+            'id_user' => $request->id_user,
             'id_file' => $request->id_file,
             'title' => $request->title,
             'id_category' => $request->id_category,

@@ -10,7 +10,7 @@ class BookCategoryController extends BaseController
 {
     public function index()
     {
-        $this->superadminOnly();
+        // $this->superadminOnly();
         $token = session('token');
         $loggedInUser = User::where('token', $token)->get();
         $firstUser = $loggedInUser->first();
@@ -29,7 +29,7 @@ class BookCategoryController extends BaseController
 
     public function create()
     {
-        $this->superadminOnly();
+        // $this->superadminOnly();
         $token = session('token');
         $loggedInUser = User::where('token', $token)->get();
         $firstUser = $loggedInUser->first();
@@ -54,7 +54,7 @@ class BookCategoryController extends BaseController
 
     public function confirmDelete($categroyId)
     {
-        $this->superadminOnly();
+        // $this->superadminOnly();
         $token = session('token');
         $loggedInUser = User::where('token', $token)->get();
         $firstUser = $loggedInUser->first();
@@ -77,7 +77,7 @@ class BookCategoryController extends BaseController
 
     public function edit($categoryId)
     {
-        $this->superadminOnly();
+        // $this->superadminOnly();
         $token = session('token');
         $loggedInUser = User::where('token', $token)->get();
         $firstUser = $loggedInUser->first();

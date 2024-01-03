@@ -13,7 +13,7 @@ class AuthorController extends BaseController
 {
     public function index()
     {
-        $this->superadminOnly();
+        // $this->superadminOnly();
         $token = session('token');
         $loggedInUser = User::where('token', $token)->get();
         $firstUser = $loggedInUser->first();
@@ -46,7 +46,7 @@ class AuthorController extends BaseController
 
     public function create()
     {
-        $this->superadminOnly();
+        // $this->superadminOnly();
         $token = session('token');
         $loggedInUser = User::where('token', $token)->get();
         $firstUser = $loggedInUser->first();
@@ -72,7 +72,7 @@ class AuthorController extends BaseController
 
     public function confirmDelete($authorId)
     {
-        $this->superadminOnly();
+        // $this->superadminOnly();
         $token = session('token');
         $loggedInUser = User::where('token', $token)->get();
         $firstUser = $loggedInUser->first();
@@ -95,7 +95,7 @@ class AuthorController extends BaseController
 
     public function edit($authorId)
     {
-        $this->superadminOnly();
+        // $this->superadminOnly();
         $token = session('token');
         $loggedInUser = User::where('token', $token)->get();
         $firstUser = $loggedInUser->first();

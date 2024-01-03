@@ -12,4 +12,8 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Model
 {
     protected $fillable = ['email', 'password', 'name', 'role', 'token'];
+
+    public function books(){
+        return $this->hasMany(Book::class,'id_book');
+    }
 }
