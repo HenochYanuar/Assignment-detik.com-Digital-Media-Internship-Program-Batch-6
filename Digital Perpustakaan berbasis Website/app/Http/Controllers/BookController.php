@@ -147,7 +147,7 @@ class BookController extends BaseController
                 'id_category' => 'required',
                 'id_publisher' => 'required',
                 'cover_image' => 'required|file|mimes:jpeg,png,jpg|max:2048',
-                'pdf_file' => 'required|file|mimes:pdf',
+                'pdf_file' => 'required|file|mimes:pdf|max:10000',
             ]);
 
             $cover = $request->file('cover_image');
@@ -219,8 +219,11 @@ class BookController extends BaseController
     public function delete(Request $request)
     {
         $bookId = $request->id;
+        $fileId = $request->id_file;
         $book = Book::findOrFail($bookId);
+        $file = BookFile::findOrFail($fileId);
         $book->delete();
+        $file->delete();
         return redirect(route('books.index'))->with('success', 'Buku Berhasil Dihapus');
     }
 

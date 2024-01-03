@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use  Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB;
 use App\Models\Book;
 
 class BookAuthorSeeder extends Seeder
@@ -19,7 +19,7 @@ class BookAuthorSeeder extends Seeder
             for ($i = 1; $i <= fake()->numberBetween(1, 5); $i++) {
                 DB::table('book_authors')->insert([
                     'id_book' => $book->id,
-                    'id_author' => fake()->numberBetween(1, 100)
+                    'id_author' => fake()->numberBetween(1, 50)
                 ]);
             }
         }

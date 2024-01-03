@@ -10,6 +10,7 @@
         <form method="POST" action="{{route('books.delete')}}">
             @csrf
             <input type="hidden" name="id" value="{{ $book->id }}">
+            <input type="hidden" name="id_file" value="{{ $book->id_file }}">
             <div class="form-group">
                 <h5>Kode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : {{ $book->code }}</h5>
             </div>

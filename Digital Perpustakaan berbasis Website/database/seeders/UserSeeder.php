@@ -16,8 +16,23 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'email' => 'qucozobe@brand-app.biz',
             'password' => password_hash('123123', PASSWORD_DEFAULT),
-            'name' => 'jhj',
-            'role' => 'user'
+            'name' => 'Henoch Yanuar',
+            'role' => 'user',
+            'is_active' => 1
+        ]);
+        DB::table('users')->insert([
+            'email' => 'sexawa5054@usoplay.com',
+            'password' => password_hash('asdasd', PASSWORD_DEFAULT),
+            'name' => 'Ari Swasono',
+            'role' => 'user',
+            'is_active' => 1
+        ]);
+        DB::table('users')->insert([
+            'email' => 'bedelec282@pyadu.com',
+            'password' => password_hash('zxczxc', PASSWORD_DEFAULT),
+            'name' => 'Super Admin',
+            'role' => 'superadmin',
+            'is_active' => 1
         ]);
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class PublisherSeeder extends Seeder
+class CategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,26 +14,25 @@ class PublisherSeeder extends Seeder
     public function run(): void
     {
         {
-            DB::table('publishers')->insert([
+            DB::table('category')->insert([
                 'id' => 1,
-                'name' => 'Gramedia'
+                'name' => 'Novel'
             ]);
-            DB::table('publishers')->insert([
+            DB::table('category')->insert([
                 'id' => 2,
-                'name' => 'Andi Offset'
+                'name' => 'Cerpen'
             ]);
-            DB::table('publishers')->insert([
+            DB::table('category')->insert([
                 'id' => 3,
-                'name' => 'Erlangga'
+                'name' => 'Komik'
             ]);
-            DB::table('publishers')->insert([
+            DB::table('category')->insert([
                 'id' => 4,
-                'name' => 'Tilted Axis Press'
+                'name' => 'Sejarah'
             ]);
-            DB::table('publishers')->insert([
+            DB::table('category')->insert([
                 'id' => 5,
-                'name' => 'Copper Canyon Press
-                '
+                'name' => 'Majalah'
             ]);
             
         }

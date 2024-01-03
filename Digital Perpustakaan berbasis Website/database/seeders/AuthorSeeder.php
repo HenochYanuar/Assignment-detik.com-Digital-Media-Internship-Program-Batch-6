@@ -13,7 +13,7 @@ class AuthorSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 1; $i <= 100; $i++) {
+        for ($i = 1; $i <= 50; $i++) {
             DB::table('authors')->insert([
                 'name' => fake()->name
             ]);
