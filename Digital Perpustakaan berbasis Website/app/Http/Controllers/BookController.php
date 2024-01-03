@@ -224,8 +224,44 @@ class BookController extends BaseController
         $validate = $request->validate([
             'title' => 'required | max:255',
             'id_category' => 'required',
-            'id_publisher' => 'required'
+            'id_publisher' => 'required',
+            'cover_image' => 'nullable|file|mimes:jpeg,png,jpg|max:2048',
+            'pdf_file' => 'nullable|file|mimes:pdf',
         ]);
+
+        $cover = $request->file('cover_image');
+        $pdf = $request->file('pdf_file');
+
+        $bookFile_id = $request->id_file;
+
+        if ($cover != null) {
+            $destinationCoverPath = public_path('/assets/dist/img/cover');
+
+            $cover_path = '/assets/dist/img/cover/' . $cover->hashName();
+            $cover_mime = $cover->getClientMimeType();
+            $cover_image = file_get_contents($cover);
+            $cover->move($destinationCoverPath, $cover->hashName());
+
+            $file = BookFile::findOrFail($bookFile_id)->update([
+                'cover_path' => $cover_path,
+                'cover_mime' => $cover_mime,
+                'cover_image' => $cover_image
+            ]);
+        }
+
+        if ($pdf != null) {
+            $destinationPdfPath = public_path('/assets/dist/pdf');
+            $pdf_path = '/assets/dist/pdf/' . $pdf->hashName();
+            $pdf_mime = $pdf->getClientMimeType();
+            $pdf_file = file_get_contents($pdf);
+            $pdf->move($destinationPdfPath, $pdf->hashName());
+
+            $file = BookFile::findOrFail($bookFile_id)->update([
+                'pdf_path' => $pdf_path,
+                'pdf_mime' => $pdf_mime,
+                'pdf_file' => $pdf_file
+            ]);
+        }
 
         $bookId = $request->id;
         $book = Book::findOrFail($bookId)->update([

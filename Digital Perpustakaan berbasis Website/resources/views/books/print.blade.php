@@ -69,6 +69,8 @@
                 <th>No</th>
                 <th>Kode</th>
                 <th>Judul Buku</th>
+                <th>File Buku</th>
+                <th>Cover</th>
                 <th>Kategori</th>
                 <th>Penerbit</th>
             </tr>
@@ -82,6 +84,20 @@
                     <td>{{ $i++ }}</td>
                     <td>{{ $book->code }}</td>
                     <td>{{ $book->title }}</td>
+                    <td>
+                        @if ($book->book_file->pdf_path != null)
+                            <a href="{{ public_path($book->book_file->pdf_path) }}" target="_blank">Download</a>    
+                       @else
+                            No File Book
+                        @endif
+                    </td>
+                    <td>
+                        @if ($book->book_file->cover_path != null)
+                            <img src="{{ public_path($book->book_file->cover_path) }}" alt="Book Cover" style="max-width: 100px;">
+                        @else
+                            No Image
+                        @endif
+                    </td>
                     <td>{{ $book->category->name }}</td>
                     <td>{{ $book->publisher->name }}</td>
                 </tr>

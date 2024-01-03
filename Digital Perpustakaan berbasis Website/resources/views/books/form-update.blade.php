@@ -13,7 +13,7 @@
     @endif --}}
 <div class="card">
     <div class="card-body">
-        <form method="POST" action="{{route('books.update')}}">
+        <form method="POST" action="{{route('books.update')}}" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="id" value="{{ $book->id }}">
             <input type="hidden" name="id_file" value="{{ $book->id_file }}">
@@ -52,6 +52,24 @@
                     @endforeach
                 </select>
                 @error('id_publisher')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="">Cover Buku</label> <br>
+                <img style="width: 200px" src="{{ $book->book_file->cover_path }}" alt=""><br> <br>
+                <input class="form-control @error('cover_image') is-invalid @enderror" value="{{ old('cover_image') }}"
+                    type="file" name="cover_image" accept="image/jpeg, image/png, image/jpg" />
+                @error('cover_image')
+                    <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="">File Buku</label> <br>
+                <a class="btn btn-outline-primary" href="{{ $book->book_file->pdf_path }}" target="_blank">Link Buku</a> <br>
+                <input class="form-control @error('pdf_file') is-invalid @enderror" value="{{ old('pdf_file') }}"
+                    type="file" name="pdf_file" accept="application/pdf" />
+                @error('pdf_file')
                     <span class="invalid-feedback">{{ $message }}</span>
                 @enderror
             </div>

@@ -14,6 +14,6 @@ class BookFile extends Model
     protected $fillable = ['cover_path','cover_mime', 'cover_image', 'pdf_path', 'pdf_mime', 'pdf_file'];
 
     public function books(){
-        return $this->belongsTo(Book::class,'id_file');
+        return $this->hasOne(Book::class,'id_file');
     }
 }

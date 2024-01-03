@@ -19,6 +19,9 @@
             <div class="form-group">
                 <h5>Publisher : {{ $book->Publisher->name }}</h5>
             </div>
+            <div class="form-group">
+                <h5>Cover : <img style="width: 100px" src="{{ $book->book_file->cover_path }}" alt=""></h5>
+            </div>
             <button class="btn btn-warning" type="button" onclick="location.href='{{ route('books.index') }}'">
                 <i class="fas fa-caret-left"></i> Kembali
             </button>
